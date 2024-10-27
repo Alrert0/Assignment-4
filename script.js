@@ -11,10 +11,11 @@ document.getElementById('calculate').addEventListener('click', () => {
     price = education(price);
     price = networth(price);
     price = age(price);
-    price = reputation(price);
+    price = reputationmult(price);
 
     price += castes(price);
     price += skill();
+    price += reputationadd();
 
     const person = {
         name,
@@ -45,19 +46,22 @@ function age(price) {
     return price;
 }
 
-function reputation(price) {
+function reputationmult(price) {
     const reputations = [
         document.getElementById('gossip_parents'),
-        document.getElementById('gossip_character'),
-        document.getElementById('general_gossip')
+        document.getElementById('gossip_character')
     ];
     reputations.forEach(rep => {
         if (rep.checked) {
-            const value = parseFloat(rep.value);
-            price = value < 1 ? price * value : price + value;
+            price *= parseFloat(rep.value);
         }
     });
     return price;
+}
+
+function reputationadd() {
+    const generalGossip = document.getElementById('general_gossip');
+    return generalGossip.checked ? parseFloat(generalGossip.value) : 0;
 }
 
 function castes(price) {
